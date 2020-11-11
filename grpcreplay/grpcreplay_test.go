@@ -22,14 +22,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	rpb "github.com/google/go-replayers/grpcreplay/proto/grpcreplay"
 	ipb "github.com/google/go-replayers/grpcreplay/proto/intstore"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/gogo/status"
 )
 
 func TestRecordIO(t *testing.T) {

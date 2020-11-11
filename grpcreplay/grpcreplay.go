@@ -20,20 +20,20 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/gogo/protobuf/types"
 	"io"
 	"log"
 	"net"
 	"os"
 	"sync"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/golang/protobuf/ptypes"
-	"github.com/golang/protobuf/ptypes/any"
+	"github.com/gogo/protobuf/proto"
+	"github.com/gogo/status"
 	pb "github.com/google/go-replayers/grpcreplay/proto/grpcreplay"
-	spb "google.golang.org/genproto/googleapis/rpc/status"
+	//spb "google.golang.org/genproto/googleapis/rpc/status"
+	spb "github.com/gogo/googleapis/google/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 )
 
 // A Recorder records RPCs for later playback.
@@ -677,10 +677,10 @@ func writeEntry(w io.Writer, e *entry) error {
 	} else {
 		m = e.msg.msg
 	}
-	var a *any.Any
+	var a *types.Any
 	var err error
 	if m != nil {
-		a, err = ptypes.MarshalAny(m)
+		a, err = types.MarshalAny(m)
 		if err != nil {
 			return err
 		}
@@ -715,8 +715,8 @@ func readEntry(r io.Reader) (*entry, error) {
 	}
 	var msg message
 	if pe.Message != nil {
-		var any ptypes.DynamicAny
-		if err := ptypes.UnmarshalAny(pe.Message, &any); err != nil {
+		var any types.DynamicAny
+		if err := types.UnmarshalAny(pe.Message, &any); err != nil {
 			return nil, err
 		}
 		if pe.IsError {

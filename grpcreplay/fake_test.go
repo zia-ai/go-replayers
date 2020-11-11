@@ -23,7 +23,7 @@ import (
 	pb "github.com/google/go-replayers/grpcreplay/proto/intstore"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/gogo/status"
 )
 
 // intStoreServer is an in-memory implementation of IntStore.

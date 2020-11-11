@@ -15,22 +15,23 @@
 # Makefile for building Go files from protos.
 
 # Change these to match your environment.
-PROTOC=$(HOME)/bin/protoc
-PROTOC_GO_PLUGIN_DIR=$(GOPATH)/bin
+PROTOC=/usr/local/bin/protoc
+PROTOC_GO_PLUGIN_DIR=$(HOME)/work/backend/platform/bin
 
-# The repo github.com/google/protobuf.
-PROTOBUF_REPO=$(HOME)/git-repos/google/protobuf
+.PHONY: gen-protos
 
-gen-protos:  sync-protobuf
+gen-protos:
 	for d in *; do \
             if [ -d $$d ]; then \
-	        PATH=$(PATH):$(PROTOC_GO_PLUGIN_DIR) \
-	        $(PROTOC) --go_out=plugins=grpc:$$d \
-	        -I $$d -I $(PROTOBUF_REPO)/src $$d/*.proto; \
+	        PATH="$(PATH):$(PROTOC_GO_PLUGIN_DIR)" \
+					$(PROTOC) --gogo_out=\
+Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,plugins=grpc:$$d \
+            -I $(HOME)/go/src/github.com/gogo/protobuf/protobuf \
+	        -I $$d $$d/*.proto; \
             fi \
 	done
-
-
-sync-protobuf:
-	cd $(PROTOBUF_REPO); git pull
 
